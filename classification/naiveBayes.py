@@ -77,7 +77,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
       self.posteriors.append(posterior)
     return guesses
       
-  def calculateLogJointProbabilities(self, datum):
+  def calculateLogJointProbabilities(self, datum): #datum is the features array 
     """
     Returns the log-joint distribution over legal labels and the datum.
     Each log-probability should be stored in the log-joint counter, e.g.    
@@ -87,9 +87,21 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     self.legalLabels.
     """
     logJoint = util.Counter()
+    for label in self.legalLabels:
+      totalProbability = 0
+      pY =  #how often label happens in training
+      totalProbability = totalProbability + math.log(pY)
+      #for each feature, find proportion of pictures in the training set where the feature takes on the same value as the current
+      #feature out of all pictures in the training where the label is true/false
+
+
+
+
+
     
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+  
     
     return logJoint
   
