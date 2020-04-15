@@ -61,7 +61,47 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     """
 
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    priorProbability = util.Counter() #find proportion of times each label appears in training
+    priorCounts = util.Counter()
+
+
+    for label in trainingLabels:
+      priorCounts[label] = priorCounts[label] + 1
+    sizeOfTraining = len(trainingLabels)
+    for label in trainingLabels:
+      priorProbability[label] = priorCounts[label]/sizeOfTraining #priorProbability now has proportion for each label
+    
+    self.priorProbability = priorProbability #save this info
+
+    #now we calculate the evidence: what is the probability of the evidence given the label?
+
+    i = 0
+    featuresCounts = util.Counter()
+    featuresProbability = util.Counter()
+
+    for datum in trainingData: #for each picture/counter
+      label = trainingLabels[i]
+      i = i + 1
+      for feature in datum: #for each feature/pixel in the counter
+        if datum[feature] == 1: #if feature is a 1
+          featuresCounts[(feature,label)] +=  1 #featuresCounter will keep track of how many pictures in the dataset have 1 for each (feature,label)
+          #if x have 1 for feature 1, sizeOfTraining-x have 0 for feature 1
+    
+
+    for feature,label in featuresCounts:
+      featuresProbability[(feature,label)] = featuresCounts[(feature,label)] / priorCounts[label]
+      #features probability is the proportion of items where its feature x = 1 (given feature and label)
+
+
+    self.featuresProbability = featuresProbability #save this info
+     
+
+
+    
+
+  
+    
+    #util.raiseNotDefined()
         
   def classify(self, testData):
     """
@@ -89,18 +129,16 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     logJoint = util.Counter()
     for label in self.legalLabels:
       totalProbability = 0
-      pY =  #how often label happens in training
-      totalProbability = totalProbability + math.log(pY)
-      #for each feature, find proportion of pictures in the training set where the feature takes on the same value as the current
-      #feature out of all pictures in the training where the label is true/false
+      totalProbability += math.log(self.priorProbability[label])
+      for feature in datum:
+        if datum[feature] == 1:
+          totalProbability += math.log(self.featuresProbability[(feature,label)])
+        else:
+          totalProbability += math.log(1 - self.featuresProbability[(feature,label)])
+      logJoint[label] = totalProbability
 
-
-
-
-
-    
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
   
     
     return logJoint
