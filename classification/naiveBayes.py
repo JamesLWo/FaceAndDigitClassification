@@ -67,9 +67,12 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
 
     for label in trainingLabels:
       priorCounts[label] = priorCounts[label] + 1
+      print("current prior count for label " + str(label) + " is: " + str(priorCounts[label]))
     sizeOfTraining = len(trainingLabels)
-    for label in trainingLabels:
-      priorProbability[label] = priorCounts[label]/sizeOfTraining #priorProbability now has proportion for each label
+    print("the size of training is " + str(sizeOfTraining))
+    for label in self.legalLabels:
+      priorProbability[label] = float(priorCounts[label])/sizeOfTraining #priorProbability now has proportion for each label
+      print("the prior probability for label " + str(label) + " is: " + str(priorProbability[label]))
     
     self.priorProbability = priorProbability #save this info
 
@@ -129,6 +132,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     logJoint = util.Counter()
     for label in self.legalLabels:
       totalProbability = 0
+      print("The prior probability: " + str(self.priorProbability[label]))
       totalProbability += math.log(self.priorProbability[label])
       for feature in datum:
         if datum[feature] == 1:
