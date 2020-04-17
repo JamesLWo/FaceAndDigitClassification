@@ -89,13 +89,20 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         if datum[feature] == 1: #if feature is a 1
           featuresCounts[(feature,label)] +=  1 #featuresCounter will keep track of how many pictures in the dataset have 1 for each (feature,label)
           #if x have 1 for feature 1, sizeOfTraining-x have 0 for feature 1
+
+    for feature,label in featuresCounts:
+      if(featuresCounts[(feature,label)] == 0):
+        print("I see a zero")
+        exit()
+      #print("The feature counts for: " + str(feature) + " and " + str(label) + " is " + str(featuresCounts[(feature,label)]))
     
 
     for feature,label in featuresCounts:
-      featuresProbability[(feature,label)] = featuresCounts[(feature,label)] / priorCounts[label]
+      featuresProbability[(feature,label)] = float(featuresCounts[(feature,label)]) / priorCounts[label]
       #features probability is the proportion of items where its feature x = 1 (given feature and label)
+      #print(str(featuresProbability[(feature,label)]))
 
-
+    #print("the features probability is: " + str(featuresCounts[(36,41),0]))
     self.featuresProbability = featuresProbability #save this info
      
 
@@ -132,13 +139,22 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     logJoint = util.Counter()
     for label in self.legalLabels:
       totalProbability = 0
-      print("The prior probability: " + str(self.priorProbability[label]))
+      #print("The prior probability: " + str(self.priorProbability[label]))
       totalProbability += math.log(self.priorProbability[label])
       for feature in datum:
         if datum[feature] == 1:
-          totalProbability += math.log(self.featuresProbability[(feature,label)])
+          #print("The featuresProbability for feature " + str(feature) + " and label " + str(label) + " is:  " + str(self.featuresProbability[(feature,label)]))
+          if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
+            totalProbability += math.log(self.featuresProbability[(feature,label)])
+          elif(self.featuresProbability[(feature,label)] == 1):
+            totalProbability += 1
         else:
-          totalProbability += math.log(1 - self.featuresProbability[(feature,label)])
+          #print("The featuresProbability for feature " + str(feature) + " and label " + str(label) + " is:  " + str(self.featuresProbability[(feature,label)]))
+          if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
+            #print("the value is " + str(1 -self.featuresProbability[(feature,label)]))
+            totalProbability += math.log(1 - self.featuresProbability[(feature,label)])
+          elif(self.featuresProbability[(feature,label)] == 0):
+            totalProbability += 1
       logJoint[label] = totalProbability
 
     "*** YOUR CODE HERE ***"
