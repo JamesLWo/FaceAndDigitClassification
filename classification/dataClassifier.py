@@ -86,7 +86,8 @@ def enhancedFeatureExtractorFace(datum):
   Your feature extraction playground for faces.
   It is your choice to modify this.
   """
-  features =  basicFeatureExtractorFace(datum)
+  features = basicFeatureExtractorFace(datum)
+
   return features
 
 def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage):
@@ -281,6 +282,7 @@ USAGE_STRING = """
                  """
 
 # Main harness code
+
 
 def runClassifier(args, options):
 
