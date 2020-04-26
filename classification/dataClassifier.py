@@ -67,7 +67,22 @@ def enhancedFeatureExtractorDigit(datum):
   
   ##
   """
-  features =  basicFeatureExtractorDigit(datum)
+  a = datum.getPixels()
+  features = util.Counter()
+  for x in range (3):
+    for y in range (3):
+      features[(x,y)] = 0
+      
+
+  for x in range(DIGIT_DATUM_WIDTH):
+    for y in range(DIGIT_DATUM_HEIGHT):
+      w = x/7
+      h = y/7
+      if datum.getPixel(x,y) > 0:
+        features[(w,h)] = features[(w,h)] + 1
+        print("for: " + str(x) + "," + str(y) +", "+"the value at (w,h) = " + str(w) + "," + str(h) + " is: "+ str(features[w,h]))
+
+  #features =  basicFeatureExtractorDigit(datum)
 
   "*** YOUR CODE HERE ***"
   

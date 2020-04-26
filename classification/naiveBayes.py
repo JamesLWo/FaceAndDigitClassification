@@ -64,15 +64,15 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     priorProbability = util.Counter() #find proportion of times each label appears in training
     priorCounts = util.Counter()
 
-
     for label in trainingLabels:
       priorCounts[label] = priorCounts[label] + 1
-      print("current prior count for label " + str(label) + " is: " + str(priorCounts[label]))
+      #print("current prior count for label " + str(label) + " is: " + str(priorCounts[label]))
     sizeOfTraining = len(trainingLabels)
-    print("the size of training is " + str(sizeOfTraining))
+    #print("the size of training is " + str(sizeOfTraining))
     for label in self.legalLabels:
       priorProbability[label] = float(priorCounts[label])/sizeOfTraining #priorProbability now has proportion for each label
-      print("the prior probability for label " + str(label) + " is: " + str(priorProbability[label]))
+      #
+      # print("the prior probability for label " + str(label) + " is: " + str(priorProbability[label]))
     
     self.priorProbability = priorProbability #save this info
 
@@ -85,11 +85,11 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     for datum in trainingData: #for each picture/counter
       label = trainingLabels[i]
       i = i + 1
-      for feature in datum: #for each feature/pixel in the counter
+      for feature in datum: #for each feature in the counter
+        #featuresCounts[(feature,label)] += datum[feature]
         if datum[feature] == 1: #if feature is a 1
           featuresCounts[(feature,label)] +=  1 #featuresCounter will keep track of how many pictures in the dataset have 1 for each (feature,label)
           #if x have 1 for feature 1, sizeOfTraining-x have 0 for feature 1
-
     for feature,label in featuresCounts:
       if(featuresCounts[(feature,label)] == 0):
         print("I see a zero")
