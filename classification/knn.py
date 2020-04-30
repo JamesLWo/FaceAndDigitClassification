@@ -1,5 +1,5 @@
 import util
-import numpy as np
+import numpy
 PRINT = True
 
 class knnClassifier:
@@ -35,7 +35,7 @@ class knnClassifier:
             testing_set.append(image)
 
         # guesses is just a list of your answers for each test datum
-        guesses = []
+        guesses = []    
 
         for testDatum in testing_set:
             #for each testDatum, construct a distances list that keeps track of how far away this testDatum is to all training data
