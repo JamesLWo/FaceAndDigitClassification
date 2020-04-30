@@ -1,3 +1,15 @@
+********
+perceptron -digits
+perceptron -faces
+knn -digits
+knn -faces
+nb -digits
+nb -faces
+********
+iterations 2 ...
+
+
+
 ACCURACY
 
 ***********************
