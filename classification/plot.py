@@ -63,11 +63,34 @@ t6_3 = [72.1, 78.2, 76.2, 78.9, 74.6, 78.6, 83.4, 82.5, 77.5, 82.2]
 t6_4 = [71.7, 79.4, 80.0, 74.5, 76.6, 80.0, 75.1, 76.0, 81.5, 81.3]
 t6_5 = [75.4, 66.9, 79.5, 74.8, 74.0, 79.3, 76.0, 80.7, 80.9, 78.4]
 
+
+# std
+# perceptron face
+std_pf = [5.052612085744342, 2.7129319932501073, 3.6998498468259164, 2.8905977851633224, 1.4966629547220471, 2.612789058970764, 4.066120181860508, 2.3475755815526416, 1.6546231527815922, 2.7455013709204787]
+
+# perceptron digit
+std_pd = [2.227644495874512, 5.809991394141645, 3.6229269934681243, 1.6363373735266236, 1.4416657032752076, 0.8452218643646175, 4.849494819050747, 2.3718347328597753, 1.987963782366269, 1.5602563891873649]
+
+# knn digit
+std_kd = [1.964281038955477, 1.1989995829857494, 0.31622776601683616, 0.9927738916792713, 0.5986651818838294, 0.47999999999999843, 0.3826225293941807, 0.2870540018881466, 0.27129319932501456, 0.14966629547095942]
+
+# knn face
+std_kf = [4.668571039996048, 1.758787461112152, 1.2364824660567495, 0.9797958971241565, 2.207059380977522, 2.78408173571363, 1.913693345901006, 0.4988876515520436, 1.1925695880036142, 0.0]
+
+# nb digit
+std_nd = [1.1966620241321315, 0.4489988864128748, 0.5099019513592824, 0.6560487786742686, 1.1278297743897319, 0.25298221281346944, 0.5670978751503112, 0.46303347611161094, 0.4166533331199939, 0.0]
+
+# nb face
+std_nf = [9.266426855390016, 1.4605934866804429, 1.0832051206255127, 1.3597385369554613, 1.4360439485648686, 1.768866554872292, 2.3999999999911124, 0.9977753031468438, 0.4216370213452443, 0.0]
+
+
 matplotlib.rc('font', size=12)
 
-plt.title("Time: KNN Digits (All Trials)")
+plt.title("Standard Deviation: KNN Digits")
 plt.xlabel("Training Data Size (%)")
-plt.ylabel("Accuracy (%)")
+plt.ylabel("Standard Deviation")
+
+plt.plot(percent, std_kd, marker='o')
 
 # plt.plot(percent, time_n_f, marker = 'o', label='NB Faces')
 # plt.plot(percent, time_n_d, marker = 'o', label='NB Digits')
@@ -76,13 +99,20 @@ plt.ylabel("Accuracy (%)")
 # plt.plot(percent, time_k_f, marker = 'o', label='KNN Faces')
 # plt.plot(percent, time_k_d, marker = 'o', label='KNN Digits')
 
-plt.plot(percent, t2_1, marker = 'o', label='Trial 1')
-plt.plot(percent, t2_2, marker = 'o', label='Trial 2')
-plt.plot(percent, t2_3, marker = 'o', label='Trial 3')
-plt.plot(percent, t2_4, marker = 'o', label='Trial 4')
-plt.plot(percent, t2_5, marker = 'o', label='Trial 5')
+# plt.plot(percent, t2_1, marker = 'o', label='Trial 1')
+# plt.plot(percent, t2_2, marker = 'o', label='Trial 2')
+# plt.plot(percent, t2_3, marker = 'o', label='Trial 3')
+# plt.plot(percent, t2_4, marker = 'o', label='Trial 4')
+# plt.plot(percent, t2_5, marker = 'o', label='Trial 5')
 
 
-plt.legend()
+# plt.legend()
 
 plt.show()
+
+# std
+# stdArr= []
+# for i in range(len(t1_1)):
+#     a = np.std([t5_1[i], t5_2[i], t5_3[i], t5_4[i], t5_5[i]])
+#     stdArr.append(a)
+# print(stdArr)
