@@ -12,6 +12,7 @@ import random
 ## Constants
 DATUM_WIDTH = 0 # in pixels
 DATUM_HEIGHT = 0 # in pixels
+seed = random.random()
 
 ## Module Classes
 
@@ -92,7 +93,7 @@ class Datum:
 
 
 # Data processing, cleanup and display functions
-    
+
 def loadDataFile(filename, n,width,height):
   """
   Reads n data images from a file and returns a list of Datum objects.
@@ -105,8 +106,16 @@ def loadDataFile(filename, n,width,height):
   fin.reverse()
   #random.shuffle(fin)
 
+  if filename == "facedata/facedatatrain":
+    iterations = 451
+  elif filename == "digitdata/trainingimages":
+    iterations = 5000
+  else:
+    iterations = n
+
   items = []
-  for i in range(n):
+  print(iterations)
+  for i in range(iterations):
     data = []
     for j in range(height):
       data.append(list(fin.pop()))
@@ -115,6 +124,8 @@ def loadDataFile(filename, n,width,height):
       print "Truncating at %d examples (maximum)" % i
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
+  if iterations == 451 or iterations == 5000:
+    return random.Random(seed).sample(items,len(items))[:n]
   return items
 
 import zipfile
@@ -131,14 +142,24 @@ def loadLabelsFile(filename, n):
   """
   Reads n labels from a file and returns a list of integers.
   """
+  if filename == "facedata/facedatatrainlabels":
+    iterations = 451
+  elif filename == "digitdata/traininglabels":
+    iterations = 5000
+  else:
+    iterations = n
+
   fin = readlines(filename)
   labels = []
-  for line in fin[:min(n, len(fin))]:
+  for line in fin[:min(iterations, len(fin))]:
     if line == '':
         break
     labels.append(int(line))
+  if iterations == 451 or iterations == 5000:
+    print "hi"
+    return random.Random(seed).sample(labels,len(labels))[:n]
   return labels
-  
+
 def asciiGrayscaleConversionFunction(value):
   """
   Helper function for display purposes.

@@ -18,6 +18,8 @@ import samples
 import sys
 import util
 import math
+import time
+import random
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -360,6 +362,7 @@ USAGE_STRING = """
 
 
 def runClassifier(args, options):
+  start = time.time()
 
   featureFunction = args['featureFunction']
   classifier = args['classifier']
@@ -383,7 +386,7 @@ def runClassifier(args, options):
     validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
     rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
-    
+  end_time = time.time()
   
   # Extract features
   print "Extracting features..."
@@ -394,16 +397,29 @@ def runClassifier(args, options):
   # Conduct training and testing
   print "Training..."
   classifier.train(trainingData, trainingLabels, validationData, validationLabels)
-  print "Validating..."
-  guesses = classifier.classify(validationData)
-  correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
-  print str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels))
+  # print "Validating..."
+  # guesses = classifier.classify(validationData)
+  # correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
+  # print str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels))
   print "Testing..."
   guesses = classifier.classify(testData)
   correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
   print str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels))
-  file1 = open("myfile.txt","w") 
-  file1.write(str(100.0 * correct / len(testLabels)) + "\n")
+  filename = "accuracy.txt"
+  filename2 = "time.txt"
+  # end_time = time.time()
+  file1 = open(filename,"a+")
+  with open(filename,"a+") as f:
+    count = sum(line.count(",") for line in f)
+  file2 = open(filename2, "a+")
+  if(count % 10 == 0):
+    file1.write("\n")
+    file2.write("\n")
+  if(count % 60 == 0):
+    file1.write("***********************\n")
+    file2.write("***********************\n")
+  file1.write(str(100.0 * correct / len(testLabels)) + ", ")
+  file2.write(str(end_time - start) + ", ")
 
   analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
   
