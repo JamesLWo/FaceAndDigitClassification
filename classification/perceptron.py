@@ -45,53 +45,35 @@ class PerceptronClassifier:
     # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
     # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
     
-    # for iteration in range(self.max_iterations):
-    #   print("Starting iteration " + str(iteration) + "...")
-    #   for i in range(len(trainingData)):
-    #       "*** YOUR CODE HERE ***"
-    #       values = util.Counter()
-    #       for j in self.legalLabels:
-    #         values[j] = (self.weights[j] * trainingData[i])
-    #       max_val = values.argMax()
-    #       if max_val != trainingLabels[i]:
-    #         self.weights[trainingLabels[i]] += trainingData[i]
-    #         self.weights[max_val] -= trainingData[i]
-    
-    # # with bias
-    # for label in self.weights.keys():
-    #   for feature in self.features:
-    #     self.weights[label][feature] = randint(-10,10)
-    #   self.weights[label]["bias"] = randint(-10,10)
-
-
     for iteration in range(self.max_iterations):
-      print("Starting iteration ", iteration, "...")
+      print("Starting iteration " + str(iteration) + "...")
       for i in range(len(trainingData)):
-        f = util.Counter()
-        for label in self.legalLabels:
-            f[label] = (self.weights[label]*trainingData[i])+self.weights[label]["bias"]
-        if len(self.legalLabels) == 2:
-            if f[0] > 0 and trainingLabels[i] == 0:
-              continue
-            elif f[0] < 0 and trainingLabels[i] == 1:
-              continue
-            elif f[0] < 0 and trainingLabels[i] == 0:
-              for feature in self.features:
-                self.weights[0][feature] += trainingData[i][feature]
-              self.weights[0]["bias"] += 1
-            else:
-              for feature in self.features:
-                self.weights[0][feature] -= trainingData[i][feature]
-              self.weights[0]["bias"] -= 1
-        elif f.argMax() == trainingLabels[i]:
-            continue
-        else:
-          for feature in self.features:
-              self.weights[f.argMax()][feature] -= trainingData[i][feature]
-          self.weights[f.argMax()]["bias"] -= 1
-          for feature in self.features:
-              self.weights[trainingLabels[i]][feature] += trainingData[i][feature]
-          self.weights[trainingLabels[i]]["bias"] += 1
+          "*** YOUR CODE HERE ***"
+          values = util.Counter()
+          for j in self.legalLabels:
+            values[j] = (self.weights[j] * trainingData[i])
+          max_val = values.argMax()
+          if max_val != trainingLabels[i]:
+            self.weights[trainingLabels[i]] += trainingData[i]
+            self.weights[max_val] -= trainingData[i]
+
+
+    # with bias
+    # for label in self.weights:
+    #   self.weights[label]["bias"] = 0
+
+    # for iteration in range(self.max_iterations):
+    #   for i in range(len(trainingData)):
+    #     values = util.Counter()
+    #     for label in self.legalLabels:
+    #         values[label] = self.weights[label] * trainingData[i] + self.weights[label]["bias"]
+    #     maxVal = values.argMax()
+    #     if maxVal != trainingLabels[i]:
+    #       for feature in self.features:
+    #         self.weights[maxVal][feature] -= trainingData[i][feature]
+    #         self.weights[trainingLabels[i]][feature] += trainingData[i][feature]
+    #       self.weights[maxVal]["bias"] -= 1
+    #       self.weights[trainingLabels[i]]["bias"] += 1
     
   def classify(self, data ):
     """
