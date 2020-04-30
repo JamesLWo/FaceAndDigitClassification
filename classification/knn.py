@@ -1,5 +1,5 @@
 import util
-import numpy
+import numpy as np
 PRINT = True
 
 class knnClassifier:
