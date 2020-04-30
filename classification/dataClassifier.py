@@ -17,6 +17,7 @@ import knn
 import samples
 import sys
 import util
+import math
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -68,34 +69,47 @@ def enhancedFeatureExtractorDigit(datum):
   
   ##
   """
-  a = datum.getPixels()
-  features = util.Counter()
-  for x in range (3):
-    for y in range (3):
-      features[(x,y)] = 0
-      
+  features = basicFeatureExtractorDigit(datum)
+  gradient_magnitude = util.Counter()
 
   for x in range(DIGIT_DATUM_WIDTH):
-    for y in range(DIGIT_DATUM_HEIGHT):
-      w = x/7
-      h = y/7
-      if datum.getPixel(x,y) > 0:
-        features[(w,h)] = features[(w,h)] + 1
-        print("for: " + str(x) + "," + str(y) +", "+"the value at (w,h) = " + str(w) + "," + str(h) + " is: "+ str(features[w,h]))
+      for y in range(DIGIT_DATUM_HEIGHT):
+          if in_bounds(x,y,'digit'):
+              gradient_x = get_gradient('x', x, y, features)
+              gradient_y = get_gradient('y', x, y, features)
+              gradient_magnitude[(x, y)] = math.sqrt(math.pow(gradient_x, 2) + math.pow(gradient_y, 2))
+              if gradient_magnitude[(x, y)] > 0:
+                  gradient_magnitude[(x, y)] = 1
+              else:
+                  gradient_magnitude[(x, y)] = 0
+          else:
+              gradient_magnitude[(x, y)] = 0
 
-  #features =  basicFeatureExtractorDigit(datum)
-
-  "*** YOUR CODE HERE ***"
-  
-  return features
+  return gradient_magnitude
 
 
 def contestFeatureExtractorDigit(datum):
   """
   Specify features to use for the minicontest
   """
-  features =  basicFeatureExtractorDigit(datum)
-  return features
+  # features = basicFeatureExtractorDigit(datum)
+  # gradient_magnitude = util.Counter()
+
+  # for x in range(DIGIT_DATUM_WIDTH):
+  #     for y in range(DIGIT_DATUM_HEIGHT):
+  #         if in_bounds(x,y,'digit'):
+  #             gradient_x = get_gradient('x', x, y, features)
+  #             gradient_y = get_gradient('y', x, y, features)
+  #             gradient_magnitude[(x, y)] = math.sqrt(math.pow(gradient_x, 2) + math.pow(gradient_y, 2))
+  #             if gradient_magnitude[(x, y)] > 0:
+  #                 gradient_magnitude[(x, y)] = 1
+  #             else:
+  #                 gradient_magnitude[(x, y)] = 0
+  #         else:
+  #             gradient_magnitude[(x, y)] = 0
+
+  # return gradient_magnitude
+  pass
 
 def enhancedFeatureExtractorFace(datum):
   """
@@ -103,8 +117,36 @@ def enhancedFeatureExtractorFace(datum):
   It is your choice to modify this.
   """
   features = basicFeatureExtractorFace(datum)
+  gradient_magnitude = util.Counter()
 
-  return features
+  for x in range(FACE_DATUM_WIDTH):
+      for y in range(FACE_DATUM_HEIGHT):
+          if in_bounds(x,y,'face'):
+              gradient_x = get_gradient('x', x, y, features)
+              gradient_y = get_gradient('y', x, y, features)
+              gradient_magnitude[(x, y)] = math.sqrt(math.pow(gradient_x, 2) + math.pow(gradient_y, 2))
+              if gradient_magnitude[(x, y)] > 0:
+                  gradient_magnitude[(x, y)] = 1
+              else:
+                  gradient_magnitude[(x, y)] = 0
+          else:
+              gradient_magnitude[(x, y)] = 0
+
+  return gradient_magnitude
+
+
+def get_gradient(axis, i, j, f):
+  if(axis == 'x'):
+    return f[(i-1, j-1)] + 2 * f[(i-1, j)] + f[(i-1, j+1)] - f[(i+1, j-1)] - 2 * f[(i+1, j)] - f[(i+1, j+1)]
+  elif(axis == 'y'):
+    return f[(i-1, j-1)] + 2 * f[(i, j-1)] + f[(i+1, j-1)] - f[(i-1, j+1)] - 2 * f[(i, j+1)] - f[(i+1, j+1)]
+
+def in_bounds(x, y, sample):
+  if sample == 'face':
+    return True if 0 < x and x < FACE_DATUM_WIDTH - 1 and 0 < y and y < FACE_DATUM_HEIGHT - 1 else False
+  elif sample == 'digit':
+    return True if 0 < x and x < DIGIT_DATUM_WIDTH - 1 and 0 < y and y < DIGIT_DATUM_HEIGHT - 1 else False
+
 
 def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage):
   """
@@ -132,13 +174,13 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
   for i in range(len(guesses)):
       prediction = guesses[i]
       truth = testLabels[i]
-      if (prediction != truth):
-          print "==================================="
-          print "Mistake on example %d" % i 
-          print "Predicted %d; truth is %d" % (prediction, truth)
-          print "Image: "
-          print rawTestData[i]
-          break
+      # if (prediction != truth):
+      #     print "==================================="
+      #     print "Mistake on example %d" % i 
+      #     print "Predicted %d; truth is %d" % (prediction, truth)
+      #     print "Image: "
+      #     print rawTestData[i]
+      #     break
 
 
 ## =====================

@@ -90,6 +90,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         if datum[feature] == 1: #if feature is a 1
           featuresCounts[(feature,label)] +=  1 #featuresCounter will keep track of how many pictures in the dataset have 1 for each (feature,label)
           #if x have 1 for feature 1, sizeOfTraining-x have 0 for feature 1
+    
     for feature,label in featuresCounts:
       if(featuresCounts[(feature,label)] == 0):
         print("I see a zero")
@@ -104,12 +105,6 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
 
     #print("the features probability is: " + str(featuresCounts[(36,41),0]))
     self.featuresProbability = featuresProbability #save this info
-     
-
-
-    
-
-  
     
     #util.raiseNotDefined()
         
@@ -147,14 +142,14 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
           if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
             totalProbability += math.log(self.featuresProbability[(feature,label)])
           elif(self.featuresProbability[(feature,label)] == 1):
-            totalProbability += 1
+            totalProbability += 0
         else:
           #print("The featuresProbability for feature " + str(feature) + " and label " + str(label) + " is:  " + str(self.featuresProbability[(feature,label)]))
           if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
             #print("the value is " + str(1 -self.featuresProbability[(feature,label)]))
             totalProbability += math.log(1 - self.featuresProbability[(feature,label)])
           elif(self.featuresProbability[(feature,label)] == 0):
-            totalProbability += 1
+            totalProbability += 0
       logJoint[label] = totalProbability
 
     "*** YOUR CODE HERE ***"
