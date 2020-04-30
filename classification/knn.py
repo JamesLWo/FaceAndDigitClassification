@@ -7,48 +7,60 @@ class knnClassifier:
     def __init__(self, legalLabels):
         self.legalLabels = legalLabels
         self.type = "knn"
-        self.kconstant = 3
-    
-    def getHeightWidth(self):
-        if(len(self.legalLabels) == 2):
-            return 60,70
-        elif(len(self.legalLabels) == 10):
-            return 28,28
+        self.kConstant = 3
     
     def train(self, trainingData, trainingLabels, validationData, validationLabels):
-        width, height = self.getHeightWidth()
+        if len(self.legalLabels) == 2:
+            self.width = 60
+            self.height = 70
+        else:
+            self.width = 28
+            self.height = 28
         training_set = []
         for datum in trainingData:
-            image = numpy.zeros((width, height))
+            image = np.zeros((self.height, self.width))
             for feature in datum:
-                image[feature] = datum[feature]
+                image[feature[1],feature[0]] = datum[feature]
             training_set.append(image)
-        
+            
+        self.training_set = training_set
         self.trainingLabels = trainingLabels
-        self.numpyData = training_set
 
     def classify(self, testData):
-        width, height = self.getHeightWidth()
+        testing_set = []
+        for datum in testData:
+            image = np.zeros((self.height,self.width))
+            for feature in datum:
+                image[feature[1],feature[0]] = datum[feature]
+            testing_set.append(image)
+
         # guesses is just a list of your answers for each test datum
         guesses = []    
 
-        # create some distance array
-        for testDatum in testData:
+        for testDatum in testing_set:
+            #for each testDatum, construct a distances list that keeps track of how far away this testDatum is to all training data
             distances = []
-            testImage = numpy.zeros((width, height))
-            for feature in testDatum:
-                testImage[feature] = testDatum[feature]
-            for trainDatum in self.numpyData:
-                distance = numpy.linalg.norm(trainDatum - testImage)
-                distances.append(distance)
-
-            sort = sorted(distances)
-            ksort = sort[0:self.kconstant]
-            closest = []
-            for dis in ksort:
-                closest.append(self.trainingLabels[distances.index(dis)])
-            label = max(set(closest), key=closest.count)                
+            for trainDatum in self.training_set:
+                #calculate euclidiean distance between training datum and test datum
+                distances.append(np.linalg.norm(testDatum - trainDatum))
             
-            guesses.append(label)
-        
+            #return the indices of the k smallest distances
+            indicesList = sorted(range(len(distances)), key = lambda sub: distances[sub])[:self.kConstant]
+
+            #Go through each index in the indicesList to find the k corresponding labels for the k closest training data
+            trainingLabelOccurrences = util.Counter()
+            for i in indicesList:
+                trainingLabelOccurrences[self.trainingLabels[i]] += 1
+
+
+            mostFrequentLabel = 0
+            frequency = 0
+            for label in trainingLabelOccurrences:
+                if trainingLabelOccurrences[label] > frequency:
+                    mostFrequentLabel = label
+                    frequency = trainingLabelOccurrences[label]
+
+            #append the label that occurred most often
+            guesses.append(mostFrequentLabel)
+
         return guesses

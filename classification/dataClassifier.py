@@ -69,23 +69,24 @@ def enhancedFeatureExtractorDigit(datum):
   
   ##
   """
-  features = basicFeatureExtractorDigit(datum)
-  gradient_magnitude = util.Counter()
+  features = util.Counter()
+  for x in range (3):
+    for y in range (3):
+      features[(x,y)] = 0
+      
 
   for x in range(DIGIT_DATUM_WIDTH):
-      for y in range(DIGIT_DATUM_HEIGHT):
-          if in_bounds(x,y,'digit'):
-              gradient_x = get_gradient('x', x, y, features)
-              gradient_y = get_gradient('y', x, y, features)
-              gradient_magnitude[(x, y)] = math.sqrt(math.pow(gradient_x, 2) + math.pow(gradient_y, 2))
-              if gradient_magnitude[(x, y)] > 0:
-                  gradient_magnitude[(x, y)] = 1
-              else:
-                  gradient_magnitude[(x, y)] = 0
-          else:
-              gradient_magnitude[(x, y)] = 0
+    for y in range(DIGIT_DATUM_HEIGHT):
+      w = x/7
+      h = y/7
+      if datum.getPixel(x,y) > 0:
+        features[(w,h)] = 1
 
-  return gradient_magnitude
+  features =  basicFeatureExtractorDigit(datum)
+
+  "*** YOUR CODE HERE ***"
+  
+  return features
 
 
 def contestFeatureExtractorDigit(datum):
@@ -146,6 +147,20 @@ def in_bounds(x, y, sample):
     return True if 0 < x and x < FACE_DATUM_WIDTH - 1 and 0 < y and y < FACE_DATUM_HEIGHT - 1 else False
   elif sample == 'digit':
     return True if 0 < x and x < DIGIT_DATUM_WIDTH - 1 and 0 < y and y < DIGIT_DATUM_HEIGHT - 1 else False
+  
+  # split into 6 x 7
+  # features = util.Counter()
+  # for x in range (5):
+  #   for y in range (6):
+  #     features[(x,y)] = 0
+      
+
+  # for x in range(FACE_DATUM_WIDTH):
+  #   for y in range(FACE_DATUM_HEIGHT):
+  #     w = x/6
+  #     h = y/7
+  #     if datum.getPixel(x,y) > 0:
+  #       features[(w,h)] = 1
 
 
 def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage):
