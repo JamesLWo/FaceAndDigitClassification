@@ -147,14 +147,18 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
           if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
             totalProbability += math.log(self.featuresProbability[(feature,label)])
           elif(self.featuresProbability[(feature,label)] == 1):
-            totalProbability += 1
+            totalProbability += 0
+          else:
+            totalProbability -= 1
         else:
           #print("The featuresProbability for feature " + str(feature) + " and label " + str(label) + " is:  " + str(self.featuresProbability[(feature,label)]))
           if(0 < self.featuresProbability[(feature,label)] and  self.featuresProbability[(feature,label)]< 1):
             #print("the value is " + str(1 -self.featuresProbability[(feature,label)]))
             totalProbability += math.log(1 - self.featuresProbability[(feature,label)])
           elif(self.featuresProbability[(feature,label)] == 0):
-            totalProbability += 1
+            totalProbability += 0
+          else:
+            totalProbability -= 1
       logJoint[label] = totalProbability
 
     "*** YOUR CODE HERE ***"
