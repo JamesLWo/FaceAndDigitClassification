@@ -7,6 +7,7 @@
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
 import util
+import random
 
 ## Constants
 DATUM_WIDTH = 0 # in pixels
@@ -102,6 +103,8 @@ def loadDataFile(filename, n,width,height):
   DATUM_HEIGHT=height
   fin = readlines(filename)
   fin.reverse()
+  #random.shuffle(fin)
+
   items = []
   for i in range(n):
     data = []
